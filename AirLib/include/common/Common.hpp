@@ -10,6 +10,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <iostream>
+#include <cmath>
 #include <cstdint>
 #include "common/common_utils/Utils.hpp"
 #include "common_utils/RandomGenerator.hpp"

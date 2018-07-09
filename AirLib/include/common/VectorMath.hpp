@@ -49,7 +49,7 @@ public:
         Vector3T position = Vector3T::Zero();
         QuaternionT orientation = QuaternionT(1, 0, 0, 0);
 
-        Pose() 
+        Pose()
         {}
 
         Pose(const Vector3T& position_val, const QuaternionT& orientation_val)
@@ -75,7 +75,7 @@ public:
             return  !(lhs == rhs);;
         }
 
-        static Pose nanPose() 
+        static Pose nanPose()
         {
             static const Pose nan_pose(VectorMathT::nanVector(), VectorMathT::nanQuaternion());
             return nan_pose;
@@ -154,12 +154,12 @@ public:
     {
         return v.norm();
     }
-    
-    static RealT magnitude(const Vector3T& v) 
+
+    static RealT magnitude(const Vector3T& v)
     {
         return v.norm();
     }
-    
+
     static Vector3T rotateVector(const Vector3T& v, const QuaternionT& q, bool assume_unit_quat)
     {
         unused(assume_unit_quat); // stop warning: unused parameter.
@@ -181,7 +181,7 @@ public:
             return q.inverse()._transformVector(v);
         else
             return q.conjugate()._transformVector(v);
-    }    
+    }
 
     static Vector3T transformToBodyFrame(const Vector3T& v_world, const QuaternionT& q, bool assume_unit_quat = true)
     {
@@ -234,7 +234,7 @@ public:
     static void toEulerianAngle(const QuaternionT& q
         , RealT& pitch, RealT& roll, RealT& yaw)
     {
-        //z-y-x rotation convention (Tait-Bryan angles) 
+        //z-y-x rotation convention (Tait-Bryan angles)
         //http://www.sedris.org/wg8home/Documents/WG80485.pdf
 
         RealT ysqr = q.y() * q.y();
@@ -252,7 +252,7 @@ public:
 
         // yaw (z-axis rotation)
         RealT t3 = +2.0f * (q.w() * q.z() + q.x() * q.y());
-        RealT t4 = +1.0f - 2.0f * (ysqr + q.z() * q.z());  
+        RealT t4 = +1.0f - 2.0f * (ysqr + q.z() * q.z());
         yaw = std::atan2(t3, t4);
     }
 
@@ -285,7 +285,7 @@ public:
 
     static QuaternionT nanQuaternion()
     {
-        return QuaternionT(std::numeric_limits<RealT>::quiet_NaN(), std::numeric_limits<RealT>::quiet_NaN(), 
+        return QuaternionT(std::numeric_limits<RealT>::quiet_NaN(), std::numeric_limits<RealT>::quiet_NaN(),
             std::numeric_limits<RealT>::quiet_NaN(), std::numeric_limits<RealT>::quiet_NaN());
     }
 
@@ -311,7 +311,7 @@ public:
     //all angles in radians
     static QuaternionT toQuaternion(RealT pitch, RealT roll, RealT yaw)
     {
-        //z-y-x rotation convention (Tait-Bryan angles) 
+        //z-y-x rotation convention (Tait-Bryan angles)
         //http://www.sedris.org/wg8home/Documents/WG80485.pdf
 
         QuaternionT q;
@@ -378,7 +378,7 @@ public:
         else
             return Utils::stringf("[%f, %f, %f]", vect[0], vect[1], vect[2]);
     }
-    static std::string toString(const QuaternionT& quaternion, bool add_eularian = false) 
+    static std::string toString(const QuaternionT& quaternion, bool add_eularian = false)
     {
         if (!add_eularian)
             return Utils::stringf("[%f, %f, %f, %f]", quaternion.w(), quaternion.x(), quaternion.y(), quaternion.z());
@@ -388,7 +388,7 @@ public:
             return Utils::stringf("[%f, %f, %f, %f]-[%f, %f, %f]",
                 quaternion.w(), quaternion.x(), quaternion.y(), quaternion.z(), pitch, roll, yaw);
         }
-    }    
+    }
     static std::string toString(const Vector2f& vect)
     {
         return Utils::stringf("[%f, %f]", vect[0], vect[1]);
@@ -400,7 +400,7 @@ public:
             , - 1.0f + 2.0f * (q.w() * q.w() + q.x() * q.x()));
     }
 
-    static RealT getPitch(const QuaternionT& q) 
+    static RealT getPitch(const QuaternionT& q)
     {
         return std::asin(2.0f * (q.y() * q.w() - q.z() * q.x()));
     }
@@ -427,18 +427,18 @@ public:
     * RPY rotates about the fixed axes in the order x-y-z,
     * which is the same as euler angles in the order z-y'-x''.
     */
-    static RealT yawFromQuaternion(const QuaternionT& q) 
+    static RealT yawFromQuaternion(const QuaternionT& q)
     {
         return atan2(2.0 * (q.w() * q.z() + q.x() * q.y()),
             1.0 - 2.0 * (q.y() * q.y() + q.z() * q.z()));
     }
 
-    static QuaternionT quaternionFromYaw(RealT yaw) 
+    static QuaternionT quaternionFromYaw(RealT yaw)
     {
         return QuaternionT(Eigen::AngleAxis<RealT>(yaw, Vector3T::UnitZ()));
     }
 
-    static QuaternionT toQuaternion(const Vector3T& axis, RealT angle) 
+    static QuaternionT toQuaternion(const Vector3T& axis, RealT angle)
     {
         //Alternative:
         //auto s = std::sinf(angle / 2);
@@ -502,7 +502,7 @@ public:
 
         RealT dot = VectorMathT::front().dot(toVector);
         dot = Utils::clip<RealT>(dot, -1, 1);
-        RealT ang = std::acosf(dot);
+        RealT ang = std::acos(dot);
 
         Vector3T axis = VectorMathT::front().cross(toVector);
         if (axis == Vector3T::Zero())
@@ -513,7 +513,7 @@ public:
         return VectorMathT::toQuaternion(axis, ang);
     }
 
-    static const Vector3T front() 
+    static const Vector3T front()
     {
         static Vector3T v(1, 0, 0);
         return v;
@@ -523,7 +523,7 @@ public:
         static Vector3T v(-1, 0, 0);
         return v;
     }
-    static const Vector3T down() 
+    static const Vector3T down()
     {
         static Vector3T v(0, 0, 1);
         return v;
@@ -533,7 +533,7 @@ public:
         static Vector3T v(0, 0, -1);
         return v;
     }
-    static const Vector3T right() 
+    static const Vector3T right()
     {
         static Vector3T v(0, 1, 0);
         return v;
